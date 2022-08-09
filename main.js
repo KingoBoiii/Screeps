@@ -1,12 +1,14 @@
 const ROLES = {
     Harvester: 'harvester',
     Upgrader: 'upgrader',
-    Builder: 'builder'
+    Builder: 'builder',
+    Repair: 'repair'
 };
 
 const roleHarvester = require('role.harvester');
 const roleUpgrader = require('role.upgrader');
 const roleBuilder = require('role.builder');
+const roleRepair = require('role.repair');
 const spawner = require('spawner');
 
 function clearMemory() {
@@ -24,6 +26,7 @@ module.exports.loop = function () {
     spawner.spawn(2, 'Harvester', ROLES.Harvester, [WORK,CARRY,MOVE]);
     spawner.spawn(1, 'Upgrader', ROLES.Upgrader, [WORK,CARRY,MOVE]);
     spawner.spawn(3, 'Builder', ROLES.Builder, [WORK,CARRY,MOVE]);
+    spawner.spawn(1, 'Repair', ROLES.Repair, [WORK,CARRY,MOVE]);
 
     for(var name in Game.creeps) {
         var creep = Game.creeps[name];
@@ -37,6 +40,9 @@ module.exports.loop = function () {
         if(creep.memory.role == ROLES.Builder) {
             roleBuilder.run(creep);
         }
+        if(creep.memory.role == ROLES.Repair) {
+            roleRepair.run(creep);
+        }    
     }
     
 }
