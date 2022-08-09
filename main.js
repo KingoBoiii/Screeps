@@ -9,13 +9,17 @@ const roleUpgrader = require('role.upgrader');
 const roleBuilder = require('role.builder');
 const spawner = require('spawner');
 
-module.exports.loop = function () {
-    
+function clearMemory() {
     for(var name in Memory.creeps) {
         if(!Game.creeps[name]) {
             delete Memory.creeps[name];
         }
     }
+}
+
+module.exports.loop = function () {
+    
+    clearMemory();
 
     spawner.spawn(2, 'Harvester', ROLES.Harvester, [WORK,CARRY,MOVE]);
     spawner.spawn(1, 'Upgrader', ROLES.Upgrader, [WORK,CARRY,MOVE]);
