@@ -11,9 +11,9 @@ const spawner = require('spawner');
 
 module.exports.loop = function () {
     
-    spawner.spawn(3, 'Harvester', ROLES.Harvester, [WORK,CARRY,MOVE]);
+    spawner.spawn(2, 'Harvester', ROLES.Harvester, [WORK,CARRY,MOVE]);
     spawner.spawn(1, 'Upgrader', ROLES.Upgrader, [WORK,CARRY,MOVE]);
-    spawner.spawn(2, 'Builder', ROLES.Builder, [WORK,CARRY,MOVE]);
+    spawner.spawn(3, 'Builder', ROLES.Builder, [WORK,CARRY,MOVE]);
 
     for(var name in Game.creeps) {
         var creep = Game.creeps[name];
