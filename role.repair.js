@@ -5,14 +5,6 @@ const roleRepair = {
     /** @param {Creep} creep **/
     run: function(creep) {
         creep.memory.working = shouldCreepWork(creep, 'Harvest', 'Repair');
-        // if(creep.memory.repairing && creep.store[RESOURCE_ENERGY] == 0) {
-        //     creep.memory.repairing = false;
-        //     creep.say('🔄 harvest');
-        // }
-        // if(!creep.memory.repairing && creep.store.getFreeCapacity() == 0) {
-        //     creep.memory.repairing = true;
-        //     creep.say('🚧 repair');
-        // }
 
         if(!creep.memory.working) {
             var sourceTarget = creep.pos.findClosestByRange(FIND_SOURCES);
