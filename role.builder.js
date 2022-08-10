@@ -14,14 +14,6 @@ const roleBuilder = {
     
     run: function(creep) {
         creep.memory.working = shouldCreepWork(creep, 'Harvest', 'Build');
-        // if(creep.memory.working && creep.store[RESOURCE_ENERGY] == 0) {
-        //     creep.memory.working = false;
-        //     creep.say('🔄 harvest');
-        // }
-        // if(!creep.memory.working && creep.store.getFreeCapacity() == 0) {
-        //     creep.memory.working = true;
-        //     creep.say('🚧 build');
-        // }
 
         const target = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES, {
             filter: (constructionSite) => {
