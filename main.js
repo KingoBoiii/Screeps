@@ -23,10 +23,15 @@ module.exports.loop = function () {
     
     clearMemory();
 
-    spawner.spawn(2, 'Harvester', ROLES.Harvester, [WORK,CARRY,MOVE]);
-    spawner.spawn(1, 'Upgrader', ROLES.Upgrader, [WORK,CARRY,MOVE]);
-    spawner.spawn(3, 'Builder', ROLES.Builder, [WORK,CARRY,MOVE]);
-    spawner.spawn(1, 'Repair', ROLES.Repair, [WORK,CARRY,MOVE]);
+    const worker = [WORK,CARRY,MOVE]; // Build cost: 200
+    const bigWorker = [WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE]; // Build cost: 550
+    const fastCarrier = [WORK,WORK,CARRY,CARRY,MOVE,MOVE,MOVE]; // Build cost: 300
+
+    // spawner.spawn(3, 'Harvester', ROLES.Harvester, worker);
+    spawner.spawn(2, 'BigHarvester', ROLES.Harvester, bigWorker);
+    spawner.spawn(1, 'Upgrader', ROLES.Upgrader, worker);
+    spawner.spawn(3, 'Builder', ROLES.Builder, worker);
+    spawner.spawn(1, 'Repair', ROLES.Repair, fastCarrier);
 
     for(var name in Game.creeps) {
         var creep = Game.creeps[name];
