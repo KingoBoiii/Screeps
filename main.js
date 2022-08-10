@@ -29,7 +29,7 @@ module.exports.loop = function () {
 
     // spawner.spawn(3, 'Harvester', ROLES.Harvester, worker);
     spawner.spawn(2, 'BigHarvester', ROLES.Harvester, bigWorker);
-    spawner.spawn(1, 'Upgrader', ROLES.Upgrader, worker);
+    spawner.spawn(3, 'Upgrader', ROLES.Upgrader, worker);
     spawner.spawn(3, 'Builder', ROLES.Builder, worker);
     spawner.spawn(1, 'Repair', ROLES.Repair, fastCarrier);
 
