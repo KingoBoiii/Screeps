@@ -1,9 +1,11 @@
 const spawner = {
 
-    spawn: function(min, name, role, bodyParts, spawnName = 'Spawn1', showSpawning = false) {
+    spawn: function(room, name, role, bodyParts, defaultTarget = 0, spawnName = 'Spawn1', showSpawning = false) {
+        const target = _.get(room.memory, ['census', role], defaultTarget);
+        
         var creeps = _.filter(Game.creeps, (creep) => creep.memory.role == role);
 
-        if(creeps.length < min) {
+        if(creeps.length < target) {
             var newName = name + Game.time;
             Game.spawns[spawnName].spawnCreep(bodyParts, newName, {memory: {role: role}});
         }

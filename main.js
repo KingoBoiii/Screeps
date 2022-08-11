@@ -27,11 +27,14 @@ module.exports.loop = function () {
     const bigWorker = [WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE]; // Build cost: 550
     const fastCarrier = [WORK,WORK,CARRY,CARRY,MOVE,MOVE,MOVE]; // Build cost: 300
 
-    // spawner.spawn(3, 'Harvester', ROLES.Harvester, worker);
-    spawner.spawn(2, 'BigHarvester', ROLES.Harvester, bigWorker);
-    spawner.spawn(3, 'Upgrader', ROLES.Upgrader, worker);
-    spawner.spawn(3, 'Builder', ROLES.Builder, worker);
-    spawner.spawn(1, 'Repair', ROLES.Repair, fastCarrier);
+    _.forEach(Game.rooms, function(room) {
+        if(room && room.controller && room.controller.my) {
+            spawner.spawn(room, 'Harvester', ROLES.Harvester, bigWorker);
+            spawner.spawn(room, 'Upgrader', ROLES.Upgrader, fastCarrier);
+            spawner.spawn(room, 'Builder', ROLES.Builder, worker);
+            spawner.spawn(room, 'Repair', ROLES.Repair, fastCarrier);
+        }
+    });
 
     for(var name in Game.creeps) {
         var creep = Game.creeps[name];
