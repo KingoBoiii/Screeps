@@ -24,21 +24,21 @@ module.exports.loop = function () {
     clearMemory();
 
     const worker = [WORK,CARRY,MOVE]; // Build cost: 200
-    const bigWorker = [WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE]; // Build cost: 550
-    const fastCarrier = [WORK,WORK,CARRY,CARRY,MOVE,MOVE,MOVE]; // Build cost: 300
+    const bigWorker = [WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE]; // Build cost: 550
 
     _.forEach(Game.rooms, function(room) {
         if(room && room.controller && room.controller.my) {
             spawner.spawn(room, 'Harvester', ROLES.Harvester, bigWorker);
-            spawner.spawn(room, 'Upgrader', ROLES.Upgrader, fastCarrier);
-            spawner.spawn(room, 'Builder', ROLES.Builder, worker);
-            spawner.spawn(room, 'Repair', ROLES.Repair, fastCarrier);
+            spawner.spawn(room, 'Upgrader', ROLES.Upgrader, bigWorker);
+            spawner.spawn(room, 'Builder', ROLES.Builder, bigWorker);
+            spawner.spawn(room, 'Repair', ROLES.Repair, bigWorker);
         }
     });
 
+
     for(var name in Game.creeps) {
         var creep = Game.creeps[name];
-        
+
         if(creep.memory.role == ROLES.Harvester) {
             roleHarvester.run(creep);
         }
