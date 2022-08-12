@@ -1,4 +1,5 @@
 const { shouldCreepWork } = require('functions');
+const creepExtensions = require('creep.extensions');
 
 var roleUpgrader = {
 
@@ -12,9 +13,9 @@ var roleUpgrader = {
             }
         }
         else {
-            var sources = creep.room.find(FIND_SOURCES);
-            if(creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(sources[0], {visualizePathStyle: {stroke: '#ffaa00'}});
+            const sourceTarget = Game.getObjectById(creep.memory.target) || creep.findEnergySource();
+            if(creep.harvest(sourceTarget) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(sourceTarget, {visualizePathStyle: {stroke: '#ffaa00'}});
             }
         }
     }

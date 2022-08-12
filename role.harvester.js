@@ -1,8 +1,10 @@
 const { shouldCreepWork } = require('functions');
+const creepExtensions = require('creep.extensions');
 const roleRepair = require('role.repair');
 
 const roleHarvester = {
     
+    /** @param {Creep} creep **/
     run: function(creep) {
         creep.memory.working = shouldCreepWork(creep, 'Harvest', 'Transfer');
 
@@ -14,7 +16,8 @@ const roleHarvester = {
 
         if(target) {
             if(!creep.memory.working) {
-                const sourceTarget = creep.pos.findClosestByRange(FIND_SOURCES);
+                const sourceTarget = Game.getObjectById(creep.memory.target) || creep.findEnergySource();
+
                 if(creep.harvest(sourceTarget) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(sourceTarget, {visualizePathStyle: {stroke: '#ffaa00'}});
                 }
