@@ -1,6 +1,13 @@
+const { getBodyPartsCost } = require('functions');
+
 const spawner = {
 
     spawn: function(room, name, role, bodyParts, defaultTarget = 0, spawnName = 'Spawn1', showSpawning = false) {
+        const bodyPartsCost = getBodyPartsCost(bodyParts);
+        if(room.energyAvailable < bodyPartsCost) {
+            return;
+        }
+
         const target = _.get(room.memory, ['census', role], defaultTarget);
         
         var creeps = _.filter(Game.creeps, (creep) => creep.memory.role == role);
