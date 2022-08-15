@@ -2,7 +2,7 @@ const { getBodyPartsCost } = require('functions');
 
 const spawner = {
 
-    spawn: function(room, name, role, bodyParts, defaultTarget = 0, spawnName = 'Spawn1', showSpawning = false) {
+    spawn: function(room, name, role, bodyParts, defaultTarget = 0, spawnName = 'Spawn1') {
         const bodyPartsCost = getBodyPartsCost(bodyParts);
         if(room.energyAvailable < bodyPartsCost) {
             return;
@@ -17,7 +17,7 @@ const spawner = {
             Game.spawns[spawnName].spawnCreep(bodyParts, newName, {memory: {role: role}});
         }
 
-        if(Game.spawns[spawnName].spawning && showSpawning) {
+        if(Game.spawns[spawnName].spawning) {
             var spawningCreep = Game.creeps[Game.spawns[spawnName].spawning.name];
             Game.spawns[spawnName].room.visual.text('🛠️' + spawningCreep.memory.role, Game.spawns[spawnName].pos.x + 1, Game.spawns[spawnName].pos.y,{align: 'left', opacity: 0.8});
         }
