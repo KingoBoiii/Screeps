@@ -33,7 +33,6 @@ Creep.prototype.shouldCreepWork = function(harvestMsg = 'Harvest', workMsg = 'Re
 Creep.prototype.findEnergySource = function() {
     const tombstones = this.room.findTombstonesWithEnergy();
     if(tombstones.length) {
-        console.log(tombstones);
         const tombstone = tombstones[0];
         this.memory.source = tombstone.id;
         return tombstone;
@@ -46,23 +45,21 @@ Creep.prototype.findEnergySource = function() {
         return energy;
     }
 
-    // const ruins = this.room.findRuinsWithEnergy();
-    // if(ruins.length) {
-    //     const ruin = ruins[0];
-    //     this.memory.source = ruin.id;
-    //     return ruin;
-    // }
+    const ruins = this.room.findRuinsWithEnergy();
+    if(ruins.length) {
+        const ruin = ruins[0];
+        this.memory.source = ruin.id;
+        return ruin;
+    }
 
     const sourceFromMemory = Game.getObjectById(this.memory.source);
-    if(sourceFromMemory && sourceFromMemory.energy > 0) {
+    const creepTargetingSource = _.sum(Game.creeps, (creep) => creep.memory.source === this.memory.source);
+    if(sourceFromMemory && sourceFromMemory.energy > 0 && creepTargetingSource < 4) {
         return sourceFromMemory;
     }
     
     const source = this.pos.findClosestByPath(FIND_SOURCES_ACTIVE, {
-        filter: (source) => {
-            const creepTargetingSource = _.sum(Game.creeps, (c) => c.memory.source === source.id && c.memory.working);
-            return (creepTargetingSource <= 4) && source.energy > 0;
-        } 
+        filter: (source) => source.energy > 0
     });
 
     if(source) {
