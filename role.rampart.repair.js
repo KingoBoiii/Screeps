@@ -1,7 +1,7 @@
 require('creep.extensions');
 require('room.extensions');
 
-const roleRepair = {
+const roleRampartRepair = {
 
     /** @param {Creep} creep **/
     run: function(creep) {
@@ -15,7 +15,7 @@ const roleRepair = {
             }
         }
         else {
-            const target = creep.room.findStructureWithLowestHits([STRUCTURE_WALL, STRUCTURE_ROAD]);
+            const target = creep.room.findStructureWithLowestHits([STRUCTURE_RAMPART]);
             if(target) {
                 if(creep.repair(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
@@ -24,6 +24,7 @@ const roleRepair = {
         }
     }
 
-};
+}
 
-module.exports = roleRepair;
+module.exports = roleRampartRepair;
+

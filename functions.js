@@ -1,20 +1,12 @@
 const functions = {
 
-    
-    /** @param {Creep} creep **/
-    shouldCreepWork: function(creep, harvestMsg = 'Harvest', workMsg = 'Repair') {
-        let work = creep.memory.working;
-        
-        if(work && creep.store[RESOURCE_ENERGY] == 0) {
-            work = false;
-            creep.say(harvestMsg);
-        }
-        if(!work && creep.store.getFreeCapacity() == 0) {
-            work = true;
-            creep.say(workMsg);
-        }
-        
-        return work;
+    /** @param {string[]} segments **/
+    getBodyPartsCost: function(bodyParts) {
+        let bodyPartsCost = 0;
+        _.forEach(bodyParts, function(bodyPart) {
+            bodyPartsCost += BODYPART_COST[bodyPart];
+        });
+        return bodyPartsCost;
     }
 
 }

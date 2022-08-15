@@ -1,36 +1,29 @@
-const { shouldCreepWork } = require('functions');
-const creepExtensions = require('creep.extensions');
-const roleRepair = require('role.repair');
+require('creep.extensions');
+require('room.extensions');
+const roleBuilder = require('role.builder');
 
 const roleHarvester = {
     
     /** @param {Creep} creep **/
     run: function(creep) {
-        creep.memory.working = shouldCreepWork(creep, 'Harvest', 'Transfer');
+        creep.shouldCreepWork('Harvest', 'Transfer');
 
-        const target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-            filter: (structure) => {
-                return (structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_SPAWN || structure.structureType == STRUCTURE_CONTAINER) && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
-            }
-        });
-
+        const target = creep.findStructureWithLowestEnergy();
         if(target) {
             if(!creep.memory.working) {
-                const sourceTarget = Game.getObjectById(creep.memory.target) || creep.findEnergySource();
+                const sourceTarget = creep.findEnergySource(); 
 
                 if(creep.harvest(sourceTarget) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(sourceTarget, {visualizePathStyle: {stroke: '#ffaa00'}});
                 }
             }
             else {
-                if(target) {
-                    if(creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                        creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
-                    }
+                if(creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
                 }
             }
         } else {
-            roleRepair.run(creep);
+            roleBuilder.run(creep);
         }
     }
     
