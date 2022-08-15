@@ -4,6 +4,18 @@ Room.prototype.findTombstonesWithEnergy = function() {
     });
 }
 
+Room.prototype.findDroppedResourceEnergy = function() {
+    return this.find(FIND_DROPPED_RESOURCES, {
+        filter: (resource) => resource.resourceType === RESOURCE_ENERGY && resource.amount > 0
+    });
+}
+
+Room.prototype.findRuinsWithEnergy = function() {
+    return this.find(FIND_RUINS, {
+        filter: (ruin) => ruin.store.getUsedCapacity(RESOURCE_ENERGY) > 0
+    });
+}
+
 /** @param {Structure} structureTypes **/
 Room.prototype.findStructureWithLowestHits = function(structureTypes = [STRUCTURE_WALL, STRUCTURE_RAMPART, STRUCTURE_ROAD]) {
     const targets = this.find(FIND_STRUCTURES, {

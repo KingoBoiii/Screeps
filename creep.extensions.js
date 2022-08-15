@@ -33,10 +33,25 @@ Creep.prototype.shouldCreepWork = function(harvestMsg = 'Harvest', workMsg = 'Re
 Creep.prototype.findEnergySource = function() {
     const tombstones = this.room.findTombstonesWithEnergy();
     if(tombstones.length) {
-        const tombstones = tombstones[0];
-        this.memory.source = tombstones.id;
-        return tombstones;
+        console.log(tombstones);
+        const tombstone = tombstones[0];
+        this.memory.source = tombstone.id;
+        return tombstone;
     }
+    
+    const droppedEnergy = this.room.findDroppedResourceEnergy();
+    if(droppedEnergy.length) {
+        const energy = droppedEnergy[0];
+        this.memory.source = energy.id;
+        return energy;
+    }
+
+    // const ruins = this.room.findRuinsWithEnergy();
+    // if(ruins.length) {
+    //     const ruin = ruins[0];
+    //     this.memory.source = ruin.id;
+    //     return ruin;
+    // }
 
     const sourceFromMemory = Game.getObjectById(this.memory.source);
     if(sourceFromMemory && sourceFromMemory.energy > 0) {
