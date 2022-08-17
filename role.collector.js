@@ -1,3 +1,5 @@
+const roleRepair = require('role.repair');
+
 const roleCollector = {
 
     /** @param {Creep} creep **/

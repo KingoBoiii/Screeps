@@ -11,7 +11,7 @@ const roleBuilder = {
         if(!t) {
             const target = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES, {
                 filter: (constructionSite) => {
-                    return constructionSite.progress < constructionSite.progressTotal || (creep.room.controller.safeMode > 0 && constructionSite.structureType === STRUCTURE_TOWER);
+                    return constructionSite.progress < constructionSite.progressTotal || (creep.room.controller.safeMode > 0);
                 }
             });
             if(target) {
