@@ -12,12 +12,9 @@ var roleUpgrader = {
             }
         }
         else {
-            const sourceTarget = creep.findEnergySource();
-            if(creep.pickup(sourceTarget, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(sourceTarget, {visualizePathStyle: {stroke: '#ffaa00'}});
-            }
-            if(creep.harvest(sourceTarget) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(sourceTarget, {visualizePathStyle: {stroke: '#ffaa00'}});
+            const storage = creep.findStorage(); 
+            if(creep.withdraw(storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(storage, {visualizePathStyle: {stroke: '#ffaa00'}});
             }
         }
     }

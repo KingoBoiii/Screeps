@@ -3,6 +3,7 @@ const ROLES = {
     Upgrader: 'upgrader',
     Builder: 'builder',
     Repair: 'repair',
+    Collector: 'collector',
     RampartRepair: 'rampartRepair'
 };
 
@@ -10,8 +11,10 @@ const roleHarvester = require('role.harvester');
 const roleUpgrader = require('role.upgrader');
 const roleBuilder = require('role.builder');
 const roleRepair = require('role.repair');
+const roleCollector = require('role.collector');
 const roleRampartRepair = require('role.rampart.repair');
 const spawner = require('room.spawner');
+const towerDefense = require('tower.defense');
 require('room.extensions');
 
 function clearMemory() {
@@ -25,37 +28,26 @@ function clearMemory() {
 module.exports.loop = function () {
     
     clearMemory();
-    
-        var tower = Game.getObjectById('0dcf6099edc0600');
-    if(tower) {
-        // var closestDamagedStructure = tower.pos.findClosestByRange(FIND_STRUCTURES, {
-        //     filter: (structure) => structure.hits < structure.hitsMax
-        // });
-        // if(closestDamagedStructure) {
-        //     tower.repair(closestDamagedStructure);
-        // }
-
-        var closestHostile = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
-        if(closestHostile) {
-            tower.attack(closestHostile);
-        }
-    }
+    towerDefense.run();
 
     const worker = [WORK,CARRY,MOVE]; // Build cost: 200
     const bigWorker = [WORK,WORK,CARRY,CARRY,MOVE,MOVE]; // Build cost: 550
+
+    const harvesterBodyParts = [WORK,WORK,WORK,WORK,WORK,MOVE]; // Build cost: 550
+    const collectorBodyParts = [CARRY,CARRY,CARRY,CARRY,CARRY,MOVE]; // Build cost: 300
 
     _.forEach(Game.rooms, function(room) {
         if(room && room.controller && room.controller.my) {
             const bodyParts = room.getBodyPartsBySegments(worker);
 
-            const havesterCount = _.sum(Game.creeps, (creep) => {
-                return creep.memory.role == ROLES.Harvester;
-            });
-            spawner.spawn(room, 'Harvester', ROLES.Harvester, bodyParts);
-            if(havesterCount > 1) {
+            const havesterCount = _.sum(Game.creeps, (creep) => creep.memory.role == ROLES.Harvester);
+            const collectorCount = _.sum(Game.creeps, (creep) => creep.memory.role == ROLES.Collector);
+            spawner.spawn(room, 'Harvester', ROLES.Harvester, harvesterBodyParts);
+            spawner.spawn(room, 'Collector', ROLES.Collector, collectorBodyParts);
+            spawner.spawn(room, 'Builder', ROLES.Builder, bodyParts);
+            if(havesterCount > 1 && collectorCount > 1) {
                 spawner.spawn(room, 'Upgrader', ROLES.Upgrader, bodyParts);
-                spawner.spawn(room, 'Builder', ROLES.Builder, bodyParts);
-                spawner.spawn(room, 'Repair', ROLES.Repair, bigWorker);
+                spawner.spawn(room, 'Repair', ROLES.Repair, bodyParts);
                 spawner.spawn(room, 'RampartRepair', ROLES.RampartRepair, worker);
             }
         }
@@ -67,6 +59,9 @@ module.exports.loop = function () {
 
         if(creep.memory.role == ROLES.Harvester) {
             roleHarvester.run(creep);
+        }
+        if(creep.memory.role == ROLES.Collector) {
+            roleCollector.run(creep);
         }
         if(creep.memory.role == ROLES.Upgrader) {
             roleUpgrader.run(creep);

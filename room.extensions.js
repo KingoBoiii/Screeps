@@ -16,6 +16,46 @@ Room.prototype.findRuinsWithEnergy = function() {
     });
 }
 
+Room.prototype.findStorage = function() {
+    return this.find(FIND_STRUCTURES, { 
+        filter: (structure) => structure.structureType === STRUCTURE_STORAGE 
+    });
+}
+
+Room.prototype.findContainers = function() {
+    return this.find(FIND_STRUCTURES, { 
+        filter: (structure) => structure.structureType === STRUCTURE_CONTAINER
+    });
+}
+
+Room.prototype.findEmptyExtensions = function() {
+    return this.find(FIND_STRUCTURES, {
+        filter: (structure) => structure.structureType === STRUCTURE_EXTENSION && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0
+    });
+}
+
+Room.prototype.findSpawn = function() {   
+    return this.find(FIND_MY_STRUCTURES, {
+        filter: (structure) => structure.structureType === STRUCTURE_SPAWN
+    });
+}
+
+Room.prototype.findEmptyExtensionsAndSpawn = function() { 
+    return this.find(FIND_STRUCTURES, { 
+        filter: (structure) => (structure.structureType === STRUCTURE_EXTENSION 
+                                || structure.structureType === STRUCTURE_SPAWN) 
+                                && structure.energy < structure.energyCapacity
+    });
+}
+
+Room.prototype.findInvaderCreeps = function() {
+    return this.find(FIND_HOSTILE_CREEPS, { filter: (creep) => creep.owner.username === 'Invader' });
+}
+
+Room.prototype.findHostileCreeps = function(opts) {
+    return this.find(FIND_HOSTILE_CREEPS);
+}
+
 /** @param {Structure} structureTypes **/
 Room.prototype.findStructureWithLowestHits = function(structureTypes = [STRUCTURE_WALL, STRUCTURE_RAMPART, STRUCTURE_ROAD]) {
     const targets = this.find(FIND_STRUCTURES, {
@@ -56,6 +96,6 @@ Room.prototype.getBodyPartsBySegments = function(segments) {
 
 /** @returns {Source[]} active sources **/
 Room.prototype.findActiveEnergySources = function() {
-    return this.find(FIND_SOURCES_ACTIVE);
+    return this.find(FIND_SOURCES_ACTIVE, { filter: (source) => source.energy > 0 && source.id != '9fa9077331385d3' });
 }
 
