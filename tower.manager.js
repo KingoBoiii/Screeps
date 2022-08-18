@@ -1,21 +1,18 @@
-class TowerManager {
+function TowerManager() {
+    this.towers = _.filter(Game.structures, (structure) => structure.structureType === STRUCTURE_TOWER);
 
-    constructor() {
-        this.towers = _.filter(Game.structures, (structure) => structure.structureType === STRUCTURE_TOWER);
-    }
-
-    defense() {
+    this.defense = function() {
         for(const tower of this.towers) {
             const invaders = tower.room.findInvaderCreeps();
             tower.attack(invaders[0]);
         }
     }
 
-    heal() {
+    this.heal = function() {
         throw new Error("Not implemented yet!");
     }
 
-    repair() {
+    this.repair = function() {
         throw new Error("Not implemented yet!");
     }
 

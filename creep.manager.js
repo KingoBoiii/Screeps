@@ -1,5 +1,6 @@
 const roleHarvester = require('role.harvester');
 const roleUpgrader = require('role.upgrader');
+const roleRepair = require('role.repair');
 const roleBuilder = require('role.builder');
 const roleCollector = require('role.collector');
 const roleRampartRepair = require('role.rampart.repair');
@@ -7,21 +8,16 @@ const spawner = require('room.spawner');
 require('room.extensions');
 
 const ROLES = require('./roles');
-const Role = require('./role.base');
-const RoleRepairer = require('./role.repairer');
 
-class CreepManager {
+function CreepManager() {
+    this.creeps = Game.creeps;
 
-    constructor() {
-        this.creeps = Game.creeps;
-    }
-
-    spawnCreeps() {
+    this.spawnCreeps = function() {
         const worker = [WORK,CARRY,MOVE]; // Build cost: 200
         const bigWorker = [WORK,WORK,CARRY,CARRY,MOVE,MOVE]; // Build cost: 550
     
         const harvesterBodyParts = [WORK,WORK,WORK,WORK,WORK,MOVE]; // Build cost: 550
-        const collectorBodyParts = [CARRY,CARRY,CARRY,CARRY,CARRY,MOVE]; // Build cost: 300
+        const collectorBodyParts = [WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE]; // Build cost: 400
     
         _.forEach(Game.rooms, function(room) {
             if(room && room.controller && room.controller.my) {
@@ -41,10 +37,9 @@ class CreepManager {
         });
     }
 
-    run() {
+    this.run = function() {
         for(const name in this.creeps) {
             var creep = Game.creeps[name];
-            const worker = new Role();
     
             if(creep.memory.role == ROLES.Harvester) {
                 roleHarvester.run(creep);
@@ -59,7 +54,7 @@ class CreepManager {
                 roleBuilder.run(creep);
             }
             if(creep.memory.role == ROLES.Repair) {
-                Role.castTo(new RoleRepairer(), worker).work(creep);
+                roleRepair.run(creep);
             }
             if(creep.memory.role == ROLES.RampartRepair) {
                 roleRampartRepair.run(creep);
@@ -67,14 +62,13 @@ class CreepManager {
         }
     }
 
-    clearDeadCreeps() {
+    this.clearDeadCreeps = function() {
         for(var name in Memory.creeps) {
             if(!Game.creeps[name]) {
                 delete Memory.creeps[name];
             }
         }
     }
-
 }
 
 module.exports = CreepManager;
