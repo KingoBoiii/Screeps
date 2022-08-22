@@ -96,6 +96,6 @@ Room.prototype.getBodyPartsBySegments = function(segments) {
 
 /** @returns {Source[]} active sources **/
 Room.prototype.findActiveEnergySources = function() {
-    return this.find(FIND_SOURCES_ACTIVE, { filter: (source) => source.energy > 0 && source.id != '9fa9077331385d3' });
+    return this.find(FIND_SOURCES_ACTIVE, { filter: (source) => source.energy > 0 });
 }
 

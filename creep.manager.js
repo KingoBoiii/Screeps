@@ -3,7 +3,9 @@ const roleUpgrader = require('role.upgrader');
 const roleRepair = require('role.repair');
 const roleBuilder = require('role.builder');
 const roleCollector = require('role.collector');
+const roleFiller = require('role.filler');
 const roleRampartRepair = require('role.rampart.repair');
+const roleContainerRepair = require('role.container.repair');
 const spawner = require('room.spawner');
 require('room.extensions');
 
@@ -18,6 +20,7 @@ function CreepManager() {
     
         const harvesterBodyParts = [WORK,WORK,WORK,WORK,WORK,MOVE]; // Build cost: 550
         const collectorBodyParts = [WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE]; // Build cost: 400
+        const fillerBodyParts = [WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE]; // Build cost: 600
     
         _.forEach(Game.rooms, function(room) {
             if(room && room.controller && room.controller.my) {
@@ -27,8 +30,10 @@ function CreepManager() {
                 const collectorCount = _.sum(Game.creeps, (creep) => creep.memory.role == ROLES.Collector);
                 spawner.spawn(room, 'Harvester', ROLES.Harvester, harvesterBodyParts);
                 spawner.spawn(room, 'Collector', ROLES.Collector, collectorBodyParts);
-                spawner.spawn(room, 'Builder', ROLES.Builder, bodyParts);
+                spawner.spawn(room, 'Filler', ROLES.Filler, fillerBodyParts);
+                spawner.spawn(room, 'ContainerRepair', ROLES.ContainerRepair, worker);
                 if(havesterCount > 1 && collectorCount > 1) {
+                    spawner.spawn(room, 'Builder', ROLES.Builder, bodyParts);
                     spawner.spawn(room, 'Upgrader', ROLES.Upgrader, bodyParts);
                     spawner.spawn(room, 'Repair', ROLES.Repair, bodyParts);
                     spawner.spawn(room, 'RampartRepair', ROLES.RampartRepair, worker);
@@ -47,6 +52,9 @@ function CreepManager() {
             if(creep.memory.role == ROLES.Collector) {
                 roleCollector.run(creep);
             }
+            if(creep.memory.role == ROLES.Filler) {
+                roleFiller.run(creep);
+            }
             if(creep.memory.role == ROLES.Upgrader) {
                 roleUpgrader.run(creep);
             }
@@ -58,6 +66,9 @@ function CreepManager() {
             }
             if(creep.memory.role == ROLES.RampartRepair) {
                 roleRampartRepair.run(creep);
+            }
+            if(creep.memory.role === ROLES.ContainerRepair) {
+                roleContainerRepair.run(creep);
             }
         }
     }

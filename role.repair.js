@@ -25,7 +25,7 @@ const roleRepair = {
 
     /** @param {Creep} creep **/
     run: function(creep) {
-        this.runStructures(creep, [STRUCTURE_CONTAINER, STRUCTURE_WALL, STRUCTURE_ROAD]);
+        this.runStructures(creep, [STRUCTURE_CONTAINER, STRUCTURE_WALL, STRUCTURE_ROAD]); // 
     }
 
 };

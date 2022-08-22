@@ -1,12 +1,13 @@
 const ROLES = {
 
     Harvester: 'harvester',
+    Collector: 'collector',
+    Filler: 'filler',
     Upgrader: 'upgrader',
     Builder: 'builder',
     Repair: 'repair',
-    Collector: 'collector',
-    RampartRepair: 'rampartRepair'
-
+    RampartRepair: 'rampartRepair',
+    ContainerRepair: 'containerRepair'
 }
 
 module.exports = ROLES;

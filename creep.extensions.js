@@ -82,7 +82,7 @@ Creep.prototype.findContainer = function() {
     }
 }
 
-Creep.prototype.findStructureWithLowestEnergy = function(structureTypes = [STRUCTURE_EXTENSION, STRUCTURE_CONTAINER, STRUCTURE_TOWER]) {
+Creep.prototype.findStructureWithLowestEnergy = function(structureTypes = [STRUCTURE_EXTENSION, STRUCTURE_TOWER]) {
     // If safe mode is active, prioritize towers.
     const invaderCount = _.sum(this.room.findInvaderCreeps());
 
